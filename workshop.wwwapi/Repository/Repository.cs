@@ -87,5 +87,10 @@ namespace workshop.wwwapi.Repository
             _db.SaveChanges();
             return entity;
         }
+
+        public IQueryable<T> GetQuery()
+        {
+            return _table;
+        }
     }
 }

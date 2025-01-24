@@ -16,6 +16,8 @@ namespace workshop.wwwapi.Repository
         Task<T> GetByIdWithIncludes(int id, params Expression<Func<T, object>>[] includes);
         Task<IEnumerable<T>> GetWithNestedIncludes(params Func<IQueryable<T>, IQueryable<T>>[] includeActions);
 
+        IQueryable<T> GetQuery();
+
 
     }
 }

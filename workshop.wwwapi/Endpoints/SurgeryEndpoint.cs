@@ -84,7 +84,11 @@ namespace workshop.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAppointmentsByDoctor(IRepository<Doctor> repository, IMapper mapper, int id)
         {
-            var doctor = await repository.GetByIdWithIncludes(id, a => a.Appointments);
+            //var doctor = await repository.GetByIdWithIncludes(id, a => a.Appointments);
+
+            Doctor doctor = await repository.GetQuery().Include(p => p.Appointments)
+                .ThenInclude(a => a.Patient)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (doctor == null)
             {
@@ -98,7 +102,12 @@ namespace workshop.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAppointmentsByPatient(IRepository<Patient> repository, IMapper mapper, int id)
         {
-            var patient = await repository.GetByIdWithIncludes(id, a => a.Appointments);
+            //var patient = await repository.GetByIdWithIncludes(id, a => a.Appointments);
+
+            Patient patient = await repository.GetQuery().Include(p => p.Appointments)
+                .ThenInclude(a => a.Doctor)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (patient == null)
             {
                 return TypedResults.NotFound();
